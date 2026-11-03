@@ -14,22 +14,19 @@ async function buscar(req, res){
 
 async function criar(req, res){
     try {
-        const dados = req.body;
-        const resposta = await PRISMA.niveis.create({
-            data: dados
-        });
+        const { nome } = req.body;
 
-        if(resposta){
-            res.json({
-                type: "success",
-                description: "Registro criado com sucesso"
-            })
-        }else{
-            res.json({
-                type: "warning",
-                description: "Falha ao criar registro"
-            })
-        }
+        await PRISMA.niveis.create({
+            data: {
+                nome
+            }
+        });
+        
+        res.json({
+            type: "success",
+            description: "Registro criado com sucesso."
+        })
+        
     } catch (error) {
         res.json({
             type: "error",
@@ -40,27 +37,23 @@ async function criar(req, res){
 
 async function editar(req, res){
     try {
-        const {id} = req.params
-        const dados = req.body;
-
-        const resposta = await PRISMA.niveis.update({
-            data: dados,
+        const { nome } = req.body;
+        const { id } = req.params;
+        
+        await PRISMA.niveis.update({
             where: {
                 id
+            },
+            data: {
+                nome
             }
         });
-
-        if(resposta){
-            res.json({
-                type: "success",
-                description: "Registro atualizado com sucesso"
-            })
-        }else{
-            res.json({
-                type: "warning",
-                description: "Falha ao atualizar registro"
-            })
-        }
+        
+        res.json({
+            type: "success",
+            description: "Registro atualizado com sucesso."
+        })
+        
     } catch (error) {
         res.json({
             type: "error",
@@ -71,25 +64,19 @@ async function editar(req, res){
 
 async function deletar(req, res){
     try {
-        const {id} = req.params
-
-        const resposta = await PRISMA.niveis.delete({
+        const { id } = req.params;
+        
+        await PRISMA.niveis.delete({
             where: {
                 id
             }
         });
-
-        if(resposta){
-            res.json({
-                type: "success",
-                description: "Registro deletado com sucesso"
-            })
-        }else{
-            res.json({
-                type: "warning",
-                description: "Falha ao deletar registro"
-            })
-        }
+        
+        res.json({
+            type: "success",
+            description: "Registro deletado com sucesso."
+        })
+        
     } catch (error) {
         res.json({
             type: "error",
@@ -97,7 +84,6 @@ async function deletar(req, res){
         });
     }
 }
-
 
 module.exports = {
     buscar,
