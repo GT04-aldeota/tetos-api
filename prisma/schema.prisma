@@ -29,9 +29,10 @@ model historico_manutencoes {
   descricao String
   valor     Float     @default(0)
   data      DateTime  @db.Date
-  imovel_id String    @db.VarChar(50)
+  imovel_id String    @db.Uuid
   createdAt DateTime  @default(now()) @db.Timestamp(6)
   updatedAt DateTime? @default(now()) @db.Timestamp(6)
+  imoveis   imoveis   @relation(fields: [imovel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "historico_manutecao_imovel_fk")
 }
 
 model imoveis {
