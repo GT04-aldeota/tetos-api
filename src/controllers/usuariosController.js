@@ -2,11 +2,7 @@ const PRISMA = require("../services");
 
 async function buscar(req, res){
     try {
-        const linhas = await PRISMA.usuarios.findMany({
-            include: {
-                niveis: true
-            }
-        });
+        const linhas = await PRISMA.usuarios.findMany();
         res.json(linhas);
     } catch (error) {
         res.json({
