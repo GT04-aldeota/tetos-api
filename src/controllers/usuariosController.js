@@ -1,8 +1,21 @@
 const PRISMA = require("../services");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 async function buscar(req, res){
     try {
-        const linhas = await PRISMA.usuarios.findMany();
+        const linhas = await PRISMA.usuarios.findMany({
+            include: {
+                nivel: {
+                    select: {
+                        nome: true
+                    }
+                }
+            },
+            omit: {
+                senha: true
+            }
+        });
         res.json(linhas);
     } catch (error) {
         res.json({
@@ -14,14 +27,16 @@ async function buscar(req, res){
 
 async function criar(req, res){
     try {
-        const { nome, email, senha, n_veis_id } = req.body;
+        let { nome, email, senha, nivel_id } = req.body;
+
+        senha = await bcrypt.hash(senha, 10);
 
         await PRISMA.usuarios.create({
             data: {
                 nome,
                 email,
                 senha,
-                n_veis_id
+                nivel_id
             }
         });
         
@@ -43,6 +58,10 @@ async function editar(req, res){
         const dados = req.body;
         const { id } = req.params;
         
+        if(dados.senha){
+            dados.senha = await bcrypt.hash(dados.senha, 10);
+        }
+
         await PRISMA.usuarios.update({
             where: {
                 id
@@ -86,9 +105,57 @@ async function deletar(req, res){
     }
 }
 
+async function login(req, res){
+    try {
+        const { email, senha } = req.body;
+
+        let usuario = await PRISMA.usuarios.findFirst({
+            where: {
+                email
+            }
+        });
+
+        if(!usuario){
+            res.json({
+                type: "warning",
+                description: "Email ou senha incorretos"
+            })
+            return;
+        }
+
+        let senhaValida = await bcrypt.compare(senha, usuario.senha);
+
+        if(!senhaValida){
+            res.json({
+                type: "warning",
+                description: "Email ou senha incorretos"
+            })
+            return;
+        }
+
+        delete usuario.senha;
+
+        let token = await jwt.sign({id: usuario.id}, process.env.SEGREDO, { expiresIn: "1h" })
+
+        res.json({
+            type: "success",
+            description: "Login realizado com sucesso",
+            usuario,
+            token
+        });
+
+    } catch (error) {
+        res.json({
+            type: "error",
+            description: error.message 
+        });
+    }
+}
+
 module.exports = {
     buscar,
     criar,
     editar,
-    deletar
+    deletar,
+    login
 }
