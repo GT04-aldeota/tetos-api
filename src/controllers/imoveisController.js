@@ -15,6 +15,7 @@ async function buscar(req, res){
 async function criar(req, res){
     try {
         const dados = req.body;
+        const arquivo = req.file;
 
         await PRISMA.imoveis.create({
             data: {
@@ -24,7 +25,8 @@ async function criar(req, res){
                 suites: Number(dados.suites),
                 garagens: Number(dados.garagens),
                 metragem: Number(dados.metragem),
-                valor_aluguel: Number(dados.valor_aluguel)
+                valor_aluguel: Number(dados.valor_aluguel),
+                imagem: `/uploads/imoveis/${arquivo.filename}`
             }
         });
         

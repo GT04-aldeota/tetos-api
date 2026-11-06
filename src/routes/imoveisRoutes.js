@@ -8,7 +8,6 @@ const storage = multer.diskStorage({
         cb(null, './uploads/imoveis')
     },
     filename: function (req, file, cb) {
-        const extensao = path.extname(file.originalname);
         const nome = path.basename(file.originalname);
         cb(null, `${Date.now()}-${nome}`);
     }
@@ -32,7 +31,7 @@ const upload = multer({
 const rotas = require("express").Router();
 
 rotas.get("/", buscar);
-rotas.post("/", upload.single('imagem'), validarDados);
+rotas.post("/", upload.single('imagem'), validarDados, criar);
 rotas.put("/:id", validarDados, editar);
 rotas.delete("/:id", deletar);
 
