@@ -14,6 +14,8 @@ function validarDados(req, res, next) {
         "tipo_id"
     ];
     const dados = req.body;
+    console.log("REQ:", req.file);
+    
     let campoAusentes = colunas.filter(chave => !Object.keys(dados).includes(chave));
 
     if(campoAusentes.length > 0){
