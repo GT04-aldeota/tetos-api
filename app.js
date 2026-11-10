@@ -5,6 +5,8 @@ const imoveisTipoRoutes = require("./src/routes/imoveisTipoRoutes");
 const usuariosRoutes = require("./src/routes/usuariosRoutes");
 const locatariosRoutes = require("./src/routes/locatariosRoutes");
 const imoveisRoutes = require("./src/routes/imoveisRoutes");
+const historicoManutencaoRoutes = require("./src/routes/historicoManutencaoRoutes");
+const historicoImovelRoutes = require("./src/routes/historicoImovelRoutes");
 const { login } = require("./src/controllers/usuariosController");
 const { usuarioAutenticado } = require("./src/middlewares/usuarioMiddlewares");
 
@@ -33,6 +35,8 @@ app.use("/niveis", usuarioAutenticado, niveisRoutes);
 app.use("/imoveis-tipo", usuarioAutenticado, imoveisTipoRoutes);
 app.use("/locatarios", usuarioAutenticado, locatariosRoutes);
 app.use("/imoveis", usuarioAutenticado, imoveisRoutes);
+app.use("/historico-manutencoes", usuarioAutenticado, historicoManutencaoRoutes);
+app.use("/historico-imoveis", usuarioAutenticado, historicoImovelRoutes);
 app.use("/usuarios", usuarioAutenticado, usuariosRoutes);
 
 app.listen(3000, () => {

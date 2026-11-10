@@ -15,9 +15,9 @@ model historico_imovel {
   data_saida       DateTime   @db.Date
   valor_aluguel    Float      @default(0)
   valor_iptu       Float      @default(0)
+  valor_condominio Float      @default(0)
   imovel_id        String     @db.Uuid
   locatario_id     String     @db.Uuid
-  valor_condominio Float      @default(0)
   createdAt        DateTime   @default(now()) @db.Timestamp(6)
   updatedAt        DateTime?  @default(now()) @db.Timestamp(6)
   imoveis          imoveis    @relation(fields: [imovel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "historico_imovel_imovel_fk")

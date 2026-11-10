@@ -1,0 +1,129 @@
+const { buscar, criar, editar, deletar } = require("../controllers/historicoImovelController");
+const { validarDados } = require("../middlewares/historicoImovelMiddlewares");
+
+const rotas = require("express").Router();
+
+rotas.get("/",
+    /* 
+    #swagger.tags = ['Histórico']
+    #swagger.summary = 'Buscar'
+    #swagger.description = 'Retorna um array de históricos cadastrados'
+    #swagger.responses[200] = {
+        description: 'Lista de históricos retornada com sucesso',
+        schema: [{ 
+            id: 1, 
+            descricao: 'troca de torneira',
+            valor_aluguel: 700,
+            valor_iptu: 800,
+            valor_condominio: 300,
+            data_entrada: '2026-11-09T00:00:00.000Z', 
+            data_saida: '2026-11-09T00:00:00.000Z', 
+            imovel_id: 'cccc-123-12asda', 
+            locatario_id: 'cccc-123-12asda', 
+            createdAt: '2026-11-09T00:00:00.000Z',
+            updatedAt: '2026-11-09T00:00:00.000Z' 
+            }]
+    }
+    #swagger.responses[500] = {
+        description: 'Erro interno no servidor'
+    }
+    */
+    buscar);
+
+rotas.post("/",
+    /* 
+    #swagger.tags = ['Histórico']
+    #swagger.summary = 'Criar'
+    #swagger.description = 'Cria um novo histórico'
+    #swagger.parameters['body'] = { 
+        in: 'body', 
+        required: true, 
+        description: 'Dados para criação do histórico',
+        schema: { 
+            $descricao: 'troca de torneira',
+            $valor_aluguel: 700,
+            $valor_iptu: 800,
+            $valor_condominio: 300,
+            $data_entrada: '2026-11-09T00:00:00.000Z', 
+            $data_saida: '2026-11-09T00:00:00.000Z', 
+            $imovel_id: 'cccc-123-12asda', 
+            $locatario_id: 'cccc-123-12asda'
+        } 
+    }
+    #swagger.responses[201] = {
+        description: 'Registro criado com sucesso'
+    }
+    #swagger.responses[400] = {
+        description: 'Dados inválidos ou faltando'
+    }
+    #swagger.responses[500] = {
+        description: 'Erro interno no servidor'
+    }
+    */
+    validarDados, criar);
+
+rotas.put("/:id",
+    /* 
+    #swagger.tags = ['Histórico']
+    #swagger.summary = 'Editar'
+    #swagger.description = 'Edita um histórico existente pelo ID'
+    #swagger.parameters['id'] = {
+        in: 'path', 
+        required: true, 
+        type: 'string',
+        description: 'ID do histórico (UUID ou numérico)'
+    }
+    #swagger.parameters['body'] = { 
+        in: 'body', 
+        required: true, 
+        description: 'Novos dados do histórico',
+        schema: { 
+            $descricao: 'troca de torneira',
+            $valor_aluguel: 700,
+            $valor_iptu: 800,
+            $valor_condominio: 300,
+            $data_entrada: '2026-11-09T00:00:00.000Z', 
+            $data_saida: '2026-11-09T00:00:00.000Z', 
+            $imovel_id: 'cccc-123-12asda', 
+            $locatario_id: 'cccc-123-12asda'
+        } 
+    }
+    #swagger.responses[200] = {
+        description: 'Registro atualizado com sucesso'
+    }
+    #swagger.responses[400] = {
+        description: 'Dados inválidos'
+    }
+    #swagger.responses[404] = {
+        description: 'Registro não encontrado'
+    }
+    #swagger.responses[500] = {
+        description: 'Erro interno no servidor'
+    }
+    */
+    validarDados, editar);
+
+rotas.delete("/:id",
+    /* 
+    #swagger.tags = ['Histórico']
+    #swagger.summary = 'Deletar'
+    #swagger.description = 'Remove um histórico pelo ID'
+    #swagger.parameters['id'] = {
+        in: 'path', 
+        required: true, 
+        type: 'string',
+        description: 'ID do histórico que será deletado'
+    }
+    #swagger.responses[204] = {
+        description: 'Registro deletado com sucesso'
+    }
+    #swagger.responses[404] = {
+        description: 'Registro não encontrado'
+    }
+    #swagger.responses[500] = {
+        description: 'Erro interno no servidor'
+    }
+    */
+    deletar);
+
+module.exports = rotas;
