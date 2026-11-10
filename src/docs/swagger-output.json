@@ -23,6 +23,10 @@
     },
     "/login": {
       "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Autentica um usuario",
         "description": "",
         "parameters": [
           {
@@ -43,7 +47,38 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Usuário autenticado ou Email ou senha incorretos.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Usuário autenticado"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "jwt-token"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mensagem": {
+                  "type": "string",
+                  "example": "Error: mensagem do erro"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           }
         }
       }

@@ -22,7 +22,12 @@ app.get("/", (req, res) => {
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.post("/login", login);
+app.post("/login",
+    /* #swagger.tags = ['Usuarios'] */
+    /* #swagger.summary = 'Autentica um usuario' */
+    /* #swagger.responses[200] = { description: 'Usuário autenticado ou Email ou senha incorretos.', schema: { mensagem: 'Usuário autenticado', token: 'jwt-token' } } */
+    /* #swagger.responses[500] = { description: 'Erro interno do servidor.', schema: { mensagem: 'Error: mensagem do erro' } } */
+    login);
 
 app.use("/niveis", usuarioAutenticado, niveisRoutes);
 app.use("/imoveis-tipo", usuarioAutenticado, imoveisTipoRoutes);
